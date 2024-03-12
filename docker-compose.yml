@@ -1,0 +1,19 @@
+version: '3'
+
+services:
+  citus:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: citus
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
+    secrets:
+      - pg_password
+
+secrets:
+  pg_password:
+    file: ./pg_password.txt
+
