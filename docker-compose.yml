@@ -1,17 +1,28 @@
 version: '3'
 
 services:
-  citus:
+  citus_master:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: citus
+    container_name: citus_master
     ports:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
     secrets:
       - pg_password
+
+  citus_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: citus_worker
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/pg_password
+    secrets:
+      - pg_password
+    command: ["--worker"]
 
 secrets:
   pg_password:
